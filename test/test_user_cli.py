@@ -11,8 +11,17 @@ import pyfiglet
 import shutil
 
 
-class TestExtractSizes(unittest.TestCase):
+class TestUserCli(unittest.TestCase):
+    """
+
+        Test cases for the user cli
+
+    """
+
     def test1(self):
+        """
+        Captures the output from stdout and compares it with the expected output
+        """
         format_welcome_message = pyfiglet.figlet_format("LECTURE AID")
         size = shutil.get_terminal_size(fallback=(120, 50))
         expected = format_welcome_message.center(size.columns) + """Welcome to Lecture Aid. Choose from the following options:
