@@ -9,24 +9,30 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from code.browser_output import *
 
+
+def menu_display():
+    format_welcome_message = pyfiglet.figlet_format("LECTURE AID")
+    size = shutil.get_terminal_size(fallback=(120, 50))
+
+    print(format_welcome_message.center(size.columns) +
+          """Welcome to Lecture Aid. Choose from the following options:
+Option 1: Press 1 to enter the file location you would like Lecture Aid to help you find resources on.
+Option 2: Press 2
+Press Q to quit the program.
+""")
+
+
 def user_menu():
     """
 
     Runner class. Prompts the user for input and returns a txt file of results
 
     """
-    format_welcome_message = pyfiglet.figlet_format("LECTURE AID")
-    size = shutil.get_terminal_size(fallback=(120, 50))
-    valid_choices = ["1", "2", "Q", "q"]
-    print(format_welcome_message.center(size.columns) + "\n")
-    print("Welcome to Lecture Aid. Choose from the following options:\n")
-    print("Option 1: Press 1 to enter the file location you would like Lecture Aid to help you find resources on.")
-    print("Option 2: Press 2 ")
-    print()
-    print("Press Q to quit the program.")
+    menu_display()
 
+    valid_choices = ["1", "2", "Q", "q"]
     while True:
-        choice = input("Please Enter your choice:")[0]
+        choice = input("Please Enter your choice: ")[0]
         if choice in valid_choices:
             break
         else:
@@ -94,7 +100,7 @@ if __name__ == "__main__":
     keyword_data = wp.duplicate_word_removal(keyword_data)
     search_query = wp.construct_search_query(keyword_data)
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        #when testing use searchquery[:10 or less]. Still working on better threading to get faster results
+        # when testing use searchquery[:10 or less]. Still working on better threading to get faster results
         results = executor.map(get_people_also_ask_links, search_query[:3])
 
     with open("results.txt", mode="w") as f:
