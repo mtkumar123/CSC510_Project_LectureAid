@@ -1,9 +1,10 @@
 """ user_cli.py """
 import shutil
 import sys
+import os
 import concurrent.futures
 import pyfiglet
-from extract_sizes import extract_words, text_to_groupings
+from extract_sizes import ppt, extract_words, text_to_groupings
 import wordprocessing as wp
 from google_search import get_people_also_ask_links
 from wordcloud import WordCloud
@@ -38,7 +39,8 @@ def user_menu():
 
     if choice == valid_choices[0]:
         file_path = input("Please enter the path to the file: ")
-        return file_path
+        file_type = os.path.splitext(file_path)[1]
+        return file_path, file_type
 
     if choice == valid_choices[1]:
         input("")
@@ -83,8 +85,14 @@ def generate_wordcloud(data: list, file_name: str) -> None:
 
 
 if __name__ == "__main__":
-    file = user_menu()
-    raw_data = extract_words(file)
+    file,file_type = user_menu()
+    # for powerpoint input
+    if file_type ==".pptx":
+        raw_data = ppt(file)
+    # for pdf input
+    if file_type ==".pdf":
+        raw_data = extract_words(file)
+    
     raw_data = text_to_groupings(raw_data)
     keyword_data = wp.extract_noun_chunks(raw_data)
     keyword_data = wp.merge_slide_with_same_headers(keyword_data)
