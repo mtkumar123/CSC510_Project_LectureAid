@@ -19,10 +19,8 @@ def ppt(file: str)->dict:
     :return: dictionary representing document metadata and words extracted from each slide
     """
 
-    if os.path.exists('pptexamples.pptx'):
-        prs=Presentation('pptexamples.pptx')
+    prs=Presentation(file)
 
-    
     doc_data = {}
     doc_data["data"] = []
     index=0
