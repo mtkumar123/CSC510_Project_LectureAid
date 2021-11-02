@@ -7,9 +7,14 @@ import pyfiglet
 from extract_sizes import ppt, extract_words, text_to_groupings
 import wordprocessing as wp
 from google_search import get_people_also_ask_links
+
+
 from wordcloud import WordCloud
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from browser_output import output_formatter, result_display
+from server.browser_output import output_formatter, result_display
+import json
 
 
 def user_menu():
@@ -98,7 +103,7 @@ if __name__ == "__main__":
     keyword_data = wp.merge_slide_with_same_headers(keyword_data)
 
     # generate a wordcloud
-    generate_wordcloud(keyword_data, file)
+    #generate_wordcloud(keyword_data, file_path)
 
     keyword_data = wp.duplicate_word_removal(keyword_data)
     search_query = wp.construct_search_query(
@@ -108,16 +113,16 @@ if __name__ == "__main__":
         # Still working on better threading to get faster results
         results = executor.map(get_people_also_ask_links, search_query[:3])
 
-    with open("results.txt", mode="w", encoding="utf-8") as f:
-        for result in results:
-            for qa in result:
-                question = qa["Question"] + "\n"
-                f.write(f"Question: {question}")
-                answer = qa["Answer"] + "\n"
-                f.write(f"Answer Link: {answer}")
-            f.write("\n\n")
+    result_object = {"results": []}
 
-    content = output_formatter()
-    name = file.split("/")[-1].replace(".pdf", "")
-    wordcloud_filename = name + ".png"
-    result_display(content, wordcloud_filename)
+    for result in results:
+        for qa in result:
+            question = qa["Question"]
+            answer = qa["Answer"]
+            simple_answer = qa["Simple Answer"]
+            result_object["results"].append({"question": question, "answer": answer, "simple_answer": simple_answer})
+
+    filename = filename.split(".")
+
+    with open("./data/results-{}.txt".format(filename[0]), mode="w", encoding="utf-8") as f:
+        f.write(json.dumps(result_object))

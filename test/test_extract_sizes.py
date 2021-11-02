@@ -5,7 +5,7 @@ Unit tests for extract sizes
 """
 import json
 import unittest
-from code.extract_sizes import (get_sizes, tag_text, text_to_groupings)
+from server.extract_sizes import (get_sizes, tag_text, text_to_groupings)
 
 
 

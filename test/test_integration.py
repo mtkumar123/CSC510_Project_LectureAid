@@ -1,5 +1,5 @@
-from code.extract_sizes import extract_words, text_to_groupings
-from code.wordprocessing import extract_noun_chunks, merge_slide_with_same_headers, duplicate_word_removal, \
+from server.extract_sizes import extract_words, text_to_groupings
+from server.wordprocessing import extract_noun_chunks, merge_slide_with_same_headers, duplicate_word_removal, \
     construct_search_query
 
 """

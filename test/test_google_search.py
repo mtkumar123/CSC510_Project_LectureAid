@@ -1,5 +1,5 @@
 import unittest
-from code.google_search import get_people_also_ask_links
+from server.google_search import get_people_also_ask_links
 
 class TestGoogleSearch(unittest.TestCase):
     def setUp(self) -> None:

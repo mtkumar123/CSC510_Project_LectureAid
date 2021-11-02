@@ -1,5 +1,5 @@
 import unittest
-from code.browser_output import content_formatter
+from server.browser_output import content_formatter
 
 class TestBrowserOutput(unittest.TestCase):
     def setUp(self) -> None:
