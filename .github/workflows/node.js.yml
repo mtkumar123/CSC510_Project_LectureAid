@@ -37,5 +37,9 @@ jobs:
       env:
         CI: false
       working-directory: 'client'
-    - run: npm test
+    - run: npm test -- --coverage
       working-directory: 'client'
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        working-directory: ./client
