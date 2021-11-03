@@ -2,19 +2,21 @@ from flask import Flask, request
 from server.user_cli import process_file
 import os
 import json
+from flask_cors import CORS
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/file-upload', methods=['POST'])
 def file_upload():
     file = request.files['file']
     filename = file.filename
+    filetype = filename.split(".")[1]
     if filename == "":
         print("Invalid request data")
         return '400'
 
     file.save(os.path.join("./data/", filename))
-    process_file(filename)
+    process_file(filename, filetype)
     return '200'
 
 
@@ -31,6 +33,8 @@ def send_data():
         f = open(filepath, "r")
         data = f.read()
         json_data = json.loads(data)
+        # response = {"data": json_data}
+        # response.headers.add('Access-Control-Allow-Origin', '*')
         return json_data
     except FileNotFoundError:
         print("File Not found : {}".format(filename))

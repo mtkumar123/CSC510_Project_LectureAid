@@ -4,16 +4,14 @@ import sys
 import os
 import concurrent.futures
 import pyfiglet
-from extract_sizes import ppt, extract_words, text_to_groupings
-import wordprocessing as wp
-from google_search import get_people_also_ask_links
-
-
+from server.extract_sizes import ppt, extract_words, text_to_groupings, extract_from_docx
+import server.wordprocessing as wp
+from server.google_search import get_people_also_ask_links
 from wordcloud import WordCloud
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from server.browser_output import output_formatter, result_display
+# from server.browser_output import output_formatter, result_display
 import json
 
 
@@ -89,14 +87,30 @@ def generate_wordcloud(data: list, file_name: str) -> None:
     plt.savefig(f'{formatted_name}.png')
 
 
-if __name__ == "__main__":
-    file,file_type = user_menu()
+def process_file(file_name: str, file_type: str):
+    """
+    Given filename and filetype of a document, process the file to find questions and related links.
+
+    :param file_name: The name of the lecture document
+    :type: str
+    :param file_type: The type of the file
+    :type: str
+    :rtype: None
+    :return: None
+    """
+
+    file_path = "./data/{}".format(file_name)
+    raw_data = []
     # for powerpoint input
-    if file_type ==".pptx":
-        raw_data = ppt(file)
+    if file_type == "pptx":
+        raw_data = ppt(file_path)
+
     # for pdf input
-    if file_type ==".pdf":
-        raw_data = extract_words(file)
+    if file_type == "pdf":
+        raw_data = extract_words(file_path)
+    
+    if (file_type == "docx" or file_type == "doc"):
+        raw_data = extract_from_docx(file_path)
     
     raw_data = text_to_groupings(raw_data)
     keyword_data = wp.extract_noun_chunks(raw_data)
@@ -106,12 +120,11 @@ if __name__ == "__main__":
     #generate_wordcloud(keyword_data, file_path)
 
     keyword_data = wp.duplicate_word_removal(keyword_data)
-    search_query = wp.construct_search_query(
-        keyword_data)
+    search_query = wp.construct_search_query(keyword_data)
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         # when testing use searchquery[:10 or less].
         # Still working on better threading to get faster results
-        results = executor.map(get_people_also_ask_links, search_query[:3])
+        results = executor.map(get_people_also_ask_links, search_query)
 
     result_object = {"results": []}
 
@@ -122,7 +135,6 @@ if __name__ == "__main__":
             simple_answer = qa["Simple Answer"]
             result_object["results"].append({"question": question, "answer": answer, "simple_answer": simple_answer})
 
-    filename = filename.split(".")
-
+    filename = file_name.split(".")
     with open("./data/results-{}.txt".format(filename[0]), mode="w", encoding="utf-8") as f:
         f.write(json.dumps(result_object))

@@ -44,10 +44,33 @@ https://pypi.org/project/people-also-ask/
 - [PyMuPDF](https://github.com/pymupdf/PyMuPDF) - Version 1.18.19
 - [wordcloud](https://pypi.org/project/wordcloud/) - Version 1.8.1
 - [matplotlib](https://matplotlib.org/) - Version 3.4.3
-- [pptx](https://python-pptx.readthedocs.io/en/latest/index.html) - Version 0.6.21
+- [python-docx](https://pypi.org/project/python-docx/) - Version 0.8.11
+- [python-pptx](https://python-pptx.readthedocs.io/en/latest/) - Version 0.6.21
+- [flask](https://pypi.org/project/Flask/) - Version 2.0.2
 
 # Setup
 
+## Setup for MacOS M1 BigSur and higher versions
+A few of the libraries are not extensively supported for the latest MacOS M1 arm64 processor as the open source communities are yet to release an automatic installation of build dependencies for these packages. Below are the steps mentioned to setup this project for MacOS
+
+- Use the below command to cross check the version of the processor. 
+  - `uname-m`
+- Keep the **python version 3.8** or below for creating the virtual environment.
+  - `python3.8 -m venv <environment_name>`
+- Activate the environment
+  - `source <environment_name>/bin/activate`
+- After the virtual environment is setup, install all the dependencies one after another.
+  - `pip3 install pyfiglet`
+  - `pip3 install pymupdf`
+  - `pip3 install spacy`
+  - `pip3 install people_also_ask`
+  - `pip3 install wordcloud`
+  - `python3 -m spacy download en_core_web_lg `
+  - `pip3 install python-docx`
+  - `pip3 install python-pptx`
+  - `pip3 install flask`
+
+## For other OS  
 - run `pip install -r requirements.txt`
   - this installs all of the required python libraries
 - run `pip install .`

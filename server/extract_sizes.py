@@ -8,6 +8,46 @@ of headers and paragraphs
 import re, os
 import fitz
 from pptx import Presentation
+import os
+import docx
+
+def extract_from_docx(file: str) -> dict:
+    """
+    Given a filepath, opens the word document and extracts words and metadata from each page.
+    :param file: String representing file path
+    :type: string
+    :rtype: dict
+    :return: dictionary representing document metadata and words extracted from each page
+    """
+    doc = docx.Document(file)
+    fullText = []
+    doc_data = {}
+    doc_data["data"] = []
+    index=0
+    
+    # To read paragraphs
+    page_data = {}
+    page_data["blocks"] = []
+    page_data["slide"] = index+1
+    
+    for para in doc.paragraphs:
+        if(len(para.text) > 0):
+            page_data["blocks"].append({"text":para.text, "size": len(para.text)})
+    doc_data["data"].append(page_data)
+    
+    # To read tables
+    for table in doc.tables:
+        for row in table.rows:
+            page_data = {}
+            page_data["blocks"] = []
+            page_data["slide"] = index+1
+            for cell in row.cells:
+                if(len(cell.text) > 0):
+                    page_data["blocks"].append({"text":cell.text, "size": len(cell.text)})
+            doc_data["data"].append(page_data)
+
+    return doc_data
+
 
 def ppt(file: str)->dict:
     """
@@ -116,7 +156,6 @@ def tag_text(unique_fonts: list, doc: dict) -> list:
     # top font size is Title, second would be header
     header_lim = unique_fonts[-2]
     all_pages = []
-
     for page in doc['data']:
         text_dict = {'Header': "", 'Paragraph': "", 'slide': page['slide']}
         # get the individual text blocks

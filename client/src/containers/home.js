@@ -17,7 +17,8 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import CustomizedAccordions from './questions';
-import { mainListItems, secondaryListItems } from './listItems';
+import BookmarkAccordian from './bookmarks.js';
+import {mainListItems, secondaryListItems } from './listItems';
 
 const result = {
   results: [
@@ -85,7 +86,6 @@ function getResults(filename){
   axios.get('http://127.0.0.1:5000/get-results', {params : {filename : "lecture4"}})
       .then(res => {
         results = JSON.parse(res.data);
-        console.log(results);
       })
   return results
 }
@@ -153,6 +153,7 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -190,6 +191,7 @@ function DashboardContent() {
             </Typography>
           </Toolbar>
         </AppBar>
+
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -208,6 +210,7 @@ function DashboardContent() {
           <Divider />
           <List>{secondaryListItems}</List>
         </Drawer>
+
         <Box
           component="main"
           sx={{
@@ -229,7 +232,6 @@ function DashboardContent() {
                   //results = {getResults("lecture4")}
                   results = {result}
                   >
-                    
                   </CustomizedAccordions>
                 </Paper>
               </Grid>

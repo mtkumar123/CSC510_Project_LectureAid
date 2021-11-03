@@ -151,10 +151,10 @@ def construct_search_query(data: list) -> list:
     header_search = []
     paragraph_search = []
     for key, value in header_counts.items():
-        if value > header_mean:
+        if value >= header_mean:
             header_search.append(key)
     for key, value in paragraph_counts.items():
-        if value > paragraph_mean:
+        if value >= paragraph_mean:
             paragraph_search.append(key)
     return header_search + paragraph_search
 
@@ -180,6 +180,8 @@ def extract_noun_chunks(data: list) -> list:
         doc_paragraph_noun_chunks = nlp(slide["Paragraph"].lower()).noun_chunks
         header_keywords = []
         paragraph_keywords = []
+        
+        # Processing header words
         for token in doc_header_noun_chunks:
             processed_words = []
             words = token.text.split()
@@ -191,6 +193,8 @@ def extract_noun_chunks(data: list) -> list:
                     processed_words.append(word)
             if len(processed_words) >= 2:
                 header_keywords.append(" ".join(processed_words))
+        
+        # Processing paragraph words
         for token in doc_paragraph_noun_chunks:
             processed_words = []
             words = token.text.split()
