@@ -124,7 +124,7 @@ def process_file(file_name: str, file_type: str):
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         # when testing use searchquery[:10 or less].
         # Still working on better threading to get faster results
-        results = executor.map(get_people_also_ask_links, search_query)
+        results = executor.map(get_people_also_ask_links, search_query[:3])
 
     result_object = {"results": []}
 
