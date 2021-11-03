@@ -4,7 +4,7 @@ import sys
 import os
 import concurrent.futures
 import pyfiglet
-from server.extract_sizes import ppt, extract_words, text_to_groupings, extract_from_docx
+from server.extract_sizes import extract_from_pptx, extract_words, text_to_groupings, extract_from_docx
 import server.wordprocessing as wp
 from server.google_search import get_people_also_ask_links
 from wordcloud import WordCloud
@@ -103,7 +103,7 @@ def process_file(file_name: str, file_type: str):
     raw_data = []
     # for powerpoint input
     if file_type == "pptx":
-        raw_data = ppt(file_path)
+        raw_data = extract_from_pptx(file_path)
 
     # for pdf input
     if file_type == "pdf":

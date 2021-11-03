@@ -49,7 +49,7 @@ def extract_from_docx(file: str) -> dict:
     return doc_data
 
 
-def ppt(file: str)->dict:
+def extract_from_pptx(file: str)->dict:
     """
     Given a filename, opens the Powerpoint and extracts words and metadata from each slide.
 
