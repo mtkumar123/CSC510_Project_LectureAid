@@ -5,7 +5,8 @@ Unit tests for extract sizes
 """
 import json
 import unittest
-from server.extract_sizes import (get_sizes, tag_text, text_to_groupings)
+from pptx import Presentation
+from server.extract_sizes import (ppt, get_sizes, tag_text, text_to_groupings)
 
 
 
@@ -16,7 +17,27 @@ class TestExtractSizes(unittest.TestCase):
     Includes testing None cases and valid PDFs
 
     """
+    def test_file_name(self):
+        filename = "fakename"
+        test_dict = ppt(filename)
+        assert test_dict == None
 
+    def test_ppt_data(self):
+        """
+        Assert valid ppt
+        """
+        filename = "./test/data/test_ppt.pptx"
+        test_dict = ppt(filename)
+        assert 'data' in test_dict
+
+    def test_ppt_info(self):
+        """
+        Assert valid powerpoint information
+        """
+        filename = "./test/data/test_ppt.pptx"
+        test_dict = ppt(filename)
+        assert len(test_dict) > 0 
+    
     def test_font_doc_none(self):
         """
         Asserts that when None is passed into get_sizes,
