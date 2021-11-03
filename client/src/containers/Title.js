@@ -1,6 +1,6 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Typography from '@mui/material/Typography';
+import * as React from "react";
+import PropTypes from "prop-types";
+import Typography from "@mui/material/Typography";
 
 function Title(props) {
   return (
@@ -11,7 +11,7 @@ function Title(props) {
 }
 
 Title.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 export default Title;

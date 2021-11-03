@@ -6,7 +6,7 @@ Unit tests for extract sizes
 import json
 import unittest
 from pptx import Presentation
-from server.extract_sizes import (extract_from_pptx, get_sizes, tag_text, text_to_groupings)
+from server.extract_sizes import (extract_from_docx, extract_from_pptx, get_sizes, tag_text, text_to_groupings)
 
 
 
@@ -130,6 +130,29 @@ class TestExtractSizes(unittest.TestCase):
             self.assertEqual(page2, actual_dict[2], f'Expected Page 2 to be {page2}')
             self.assertEqual([page0, page1, page2], actual_dict)
 
+    def test_file_name(self):
+        """
+        Check if file name is valid
+        """
+        filename = "randomFileName"
+        test_dict = extract_from_docx(filename)
+        assert test_dict == None
+
+    def test_docx_data(self):
+        """
+        Assert valid docx data
+        """
+        filename = "./test/data/test_docx_file.docx"
+        test_dict = extract_from_docx(filename)
+        assert 'data' in test_dict
+
+    def test_docx_info(self):
+        """
+        Assert valid docx file information
+        """
+        filename = "./test/data/test_docx_file.docx"
+        test_dict = extract_from_docx(filename)
+        assert len(test_dict) > 0 
 
 if __name__ == '__main__':
     unittest.main()

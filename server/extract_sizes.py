@@ -19,8 +19,12 @@ def extract_from_docx(file: str) -> dict:
     :rtype: dict
     :return: dictionary representing document metadata and words extracted from each page
     """
-    doc = docx.Document(file)
-    fullText = []
+    
+    if os.path.exists(file):
+        doc = docx.Document(file)
+    else:
+        return
+
     doc_data = {}
     doc_data["data"] = []
     index=0
