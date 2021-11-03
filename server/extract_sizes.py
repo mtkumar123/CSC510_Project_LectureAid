@@ -39,7 +39,31 @@ def ppt(file: str)->dict:
 
     return doc_data
 
+def extract_from_txt(file: str)->dict:
+    """
+    Given a filename, opens the txt file and extracts words and metadata from the file.
+    :param file: String representing file path
+    :type: string
+    :rtype: dict
+    :return: dictionary representing document metadata and words extracted from file
+    """
+    doc_data = {}
+    doc_data["data"] = []
+    index=0
 
+    with open(file, 'r') as f:
+        lines = f.readlines()
+    page_data = {}
+    page_data["slide"] = index+1
+    page_data["blocks"] = []
+    for line in lines:
+        page_data["blocks"].append({
+            "text": line,
+            "size": len(line)
+        })
+    doc_data["data"].append(page_data)
+    return doc_data
+    
 def extract_words(file: str) -> dict:
     """
     Given a filename, opens the PDF and extracts words and metadata from each slide.

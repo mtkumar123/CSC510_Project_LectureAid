@@ -108,6 +108,10 @@ def process_file(file_name: str, file_type: str):
     # for pdf input
     if file_type == "pdf":
         raw_data = extract_words(file_path)
+
+    # for txt or md input
+    if file_type == "md" or file_type == "txt":
+        raw_data = extract_from_txt(file_path)
     
     raw_data = text_to_groupings(raw_data)
     keyword_data = wp.extract_noun_chunks(raw_data)

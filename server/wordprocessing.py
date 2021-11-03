@@ -151,10 +151,10 @@ def construct_search_query(data: list) -> list:
     header_search = []
     paragraph_search = []
     for key, value in header_counts.items():
-        if value > header_mean:
+        if value >= header_mean:
             header_search.append(key)
     for key, value in paragraph_counts.items():
-        if value > paragraph_mean:
+        if value >= paragraph_mean:
             paragraph_search.append(key)
     return header_search + paragraph_search
 
