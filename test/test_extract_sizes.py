@@ -17,6 +17,9 @@ class TestExtractSizes(unittest.TestCase):
     Includes testing None cases and valid PDFs
 
     """
+    def test_pptx(self):
+        assert 0 == 0
+    
     def test_pptx_file_location(self):
         filename = "fakelocation"
         test_dict = extract_from_pptx(filename)
